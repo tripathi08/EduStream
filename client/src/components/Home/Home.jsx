@@ -21,9 +21,11 @@ const Home = () => {
         alignItems="center"
         spacing={['16','56']}
         >
-        <VStack  width={"full"} alignItems={['center','flex-end']}>
+        <VStack  width={"full"} alignItems={['center','flex-end']} spacing={"8"}>
          <Heading children="LEARN FROM THE EXPERTS" size={'2xl'}/>
-         <Text children="Find Valuable Content at reasonable price."/>
+         <Text textAlign={["center","left"]} children="Find Valuable Content at reasonable price."
+          fontSize={'xl'} fontFamily={"cursive"}
+         />
          <Link to="/courses">
             <Button size={"lg"} colorScheme='yellow'>
                 Explore Now
@@ -46,7 +48,6 @@ const Home = () => {
        </Box>
        <div className='container2'>
         <video autoPlay controls controlsList='nodownload nofullscreen noremoteplayback' disablePictureInPicture disableRemotePlayback src={introVideo}>
-
         </video>
        </div>
 
