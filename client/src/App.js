@@ -10,6 +10,7 @@ import ForgotPassword from './components/Auth/ForgotPassword';
 import ResetPassword from './components/Auth/ResetPassword';
 import Contact from './components/Contact/Contact';
 import Request from './components/Request/Request';
+import About from './components/About/About';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/courses' element={<Courses/>}/>
         <Route path='/contact' element={<Contact/>}/>
         <Route path='/request' element={<Request/>}/>
+        <Route path='/about' element={<About/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/> 
         <Route path='/forgotpassword' element={<ForgotPassword/>}/>
