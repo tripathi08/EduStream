@@ -47,7 +47,7 @@ const Home = () => {
         </HStack>
        </Box>
        <div className='container2'>
-        <video autoPlay controls controlsList='nodownload nofullscreen noremoteplayback' disablePictureInPicture disableRemotePlayback src={introVideo}>
+        <video autoPlay muted controls controlsList='nodownload nofullscreen noremoteplayback' disablePictureInPicture disableRemotePlayback src={introVideo}>
         </video>
        </div>
 
