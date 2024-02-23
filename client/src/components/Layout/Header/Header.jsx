@@ -24,6 +24,7 @@ const Header = () => {
     <>
       <ColorModeSwitcher/>  
       <Button onClick={onOpen} colorScheme='yellow' width={"12"} height={"12"} rounded={"full"}
+      zIndex={'overlay'}
       position={"fixed"} top={"6"} left={"6"}>
         <RiMenu5Fill/>
       </Button>

@@ -36,7 +36,7 @@ const CoursePage = () => {
 ];
   return (
     <Grid minH={"90vh"} templateColumns={["1fr","3fr 1fr"]}>
-       <Box marginLeft={["2rem","5rem"]} marginTop={"4rem"}>
+       <Box marginLeft={"1rem"} marginTop={"4rem"}>
        <video width={"100%"} controls controlsList='nodownload noremoteplayback' disablePictureInPicture disableRemotePlayback src={introVideo}>
         </video>
         <Heading m={"4"} children={`#${lectureNumber+1} ${lectures[lectureNumber].title}`}/>
