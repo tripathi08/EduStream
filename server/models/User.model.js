@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator"
+import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
 
 const schema=new mongoose.Schema({
     name:{
@@ -12,7 +14,7 @@ const schema=new mongoose.Schema({
         unique:true,
         validate:validator.isEmail,
     },
-    email:{
+    password:{
         type:String,
         required:[true,"Please enter your password!"],
         minLength:[6,"Password must be at least 6 characters long!"],
@@ -52,5 +54,21 @@ const schema=new mongoose.Schema({
     ResetPasswordExpire:String,
     });
 
-export const User=mongoose.model("User",schema);
+    schema.pre("save",async function(next){
+        if(!this.isModified("password")) return next();
+        this.password=await bcrypt.hash(this.password,10);
+        next();
+    })
+
+    schema.methods.getJWTToken=function(){
+       return jwt.sign({_id:this._id},process.env.JWT_SECRET,{
+        expiresIn:"15d",
+       })
+    }
+
+    schema.methods.comparePassword=async function(password){
+        return await bcrypt.compare(password,this.password)
+     }
+
+export const User=mongoose.model("User",schema); 
 
