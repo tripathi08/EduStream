@@ -1,6 +1,6 @@
 import express from "express"
-import { addToPlaylist, changePassword, forgetPassword, getMyProfile, login, logout, register, removeFromPlaylist, resetPassword, updateProfile, updateProfilePicture } from "../controllers/user.controller.js";
-import { isAuthenticated } from "../middlewares/auth.js";
+import { addToPlaylist, changePassword, deleteMyProfile, deleteUser, forgetPassword, getAllUsers, getMyProfile, login, logout, register, removeFromPlaylist, resetPassword, updateProfile, updateProfilePicture, updateUserRole } from "../controllers/user.controller.js";
+import { authorizeAdmin,isAuthenticated } from "../middlewares/auth.js";
 import singleUpload from "../middlewares/multer.js";
 
 const router=express.Router();
@@ -16,6 +16,9 @@ router.route("/logout").get(logout)
 
 //Get my profile
 router.route("/me").get(isAuthenticated,getMyProfile);
+
+//Delete my profile
+router.route("/me").delete(isAuthenticated,deleteMyProfile);
 
 //Change Password
 router.route("/changepassword").put(isAuthenticated,changePassword)
@@ -38,6 +41,12 @@ router.route("/addtoplaylist").post(isAuthenticated,addToPlaylist)
 //Remove from playlist
 router.route("/removefromplaylist").delete(isAuthenticated,removeFromPlaylist)
 
+//Admin Routes
+//Get all users
+router.route("/admin/users").get(isAuthenticated,authorizeAdmin,getAllUsers)
+
+//Change User Roles
+router.route("/admin/user/:id").get(isAuthenticated,authorizeAdmin,updateUserRole).delete(isAuthenticated,authorizeAdmin,deleteUser)
 
 
 
