@@ -1,11 +1,12 @@
 import express from "express"
 import { addToPlaylist, changePassword, forgetPassword, getMyProfile, login, logout, register, removeFromPlaylist, resetPassword, updateProfile, updateProfilePicture } from "../controllers/user.controller.js";
 import { isAuthenticated } from "../middlewares/auth.js";
+import singleUpload from "../middlewares/multer.js";
 
 const router=express.Router();
 
 // To register a new user
-router.route("/register").post(register)
+router.route("/register").post(singleUpload,register)
 
 //Login
 router.route("/login").post(login)
@@ -23,7 +24,7 @@ router.route("/changepassword").put(isAuthenticated,changePassword)
 router.route("/updateprofile").put(isAuthenticated,updateProfile)
 
 //Update Profile Picture
-router.route("/updateprofilepicture").put(isAuthenticated,updateProfilePicture)
+router.route("/updateprofilepicture").put(isAuthenticated,singleUpload,updateProfilePicture)
 
 //Forget Password
 router.route("/forgetpassword").post(forgetPassword)
