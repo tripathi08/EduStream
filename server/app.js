@@ -3,6 +3,7 @@ import {config} from "dotenv";
 import course from "./routes/course.routes.js"
 import user from "./routes/user.routes.js"
 import payment from "./routes/payment.routes.js"
+import other from "./routes/other.routes.js"
 import ErrorMiddleware from "./middlewares/Error.js";
 import cookieParser from "cookie-parser";
 
@@ -21,6 +22,8 @@ app.use(cookieParser());
 app.use("/api/v1",course);
 app.use("/api/v1",user);
 app.use("/api/v1",payment);
+app.use("/api/v1",other);
+
 
 export default app;
 
