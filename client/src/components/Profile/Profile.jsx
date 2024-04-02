@@ -1,21 +1,43 @@
 import { Avatar, Button, Container, HStack, Heading, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, VStack, useDisclosure } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {RiDeleteBin5Fill} from 'react-icons/ri'
 import { Link } from 'react-router-dom'
 import {fileUploadCss} from "../Auth/Register"
+import { updateProfilePicture } from '../../redux/actions/profile'
+import { useDispatch, useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
+import { loadUser } from '../../redux/actions/user'
 
 const Profile = ({user}) => {
+
+    const dispatch=useDispatch();
+
+    const {loading,message,error}=useSelector(state=>state.profile);
+
     
-
-
     const removeFromPlaylistHandler=id=>{
         console.log(id, "removed")
     }
 
-    const changeImageSubmitHandler=(e,image)=>{
+    const changeImageSubmitHandler= async(e,image)=>{
         e.preventDefault();
-        console.log(image)
+        const myForm=new FormData();
+        myForm.append('file',image);
+        await dispatch(updateProfilePicture(myForm));
+        dispatch(loadUser());
     }
+
+    useEffect(()=>{
+        if(error){
+          toast.error(error);
+          dispatch({type:'clearError'});
+        }
+        if(message){
+          toast.success(message);
+          dispatch({type:'clearMessage'});
+        }
+      },[dispatch,error,message])
+    
 
     const {isOpen,onClose,onOpen}=useDisclosure();
 
@@ -86,14 +108,14 @@ const Profile = ({user}) => {
             </Stack>
         )
       }
-      <ChangePhotoBox changeImageSubmitHandler={changeImageSubmitHandler} isOpen={isOpen} onClose={onClose}/>
+      <ChangePhotoBox changeImageSubmitHandler={changeImageSubmitHandler} isOpen={isOpen} onClose={onClose} loading={loading}/>
     </Container>
   )
 }
 
 export default Profile
 
-function ChangePhotoBox({isOpen,onClose,changeImageSubmitHandler}){
+function ChangePhotoBox({isOpen,onClose,changeImageSubmitHandler,loading}){
 
     const [image,setImage]=useState("");
     const [imagePrev,setImagePrev]=useState("");
@@ -129,7 +151,7 @@ function ChangePhotoBox({isOpen,onClose,changeImageSubmitHandler}){
                         <Input type={"file"} css={{"&::file-selector-button":fileUploadCss}}
                             onChange={changeImage}
                         />
-                        <Button w={"full"} colorScheme='yellow' type='submit'>Change</Button>
+                        <Button isLoading={loading} w={"full"} colorScheme='yellow' type='submit'>Change</Button>
                     </VStack>
                 </form>
             </Container>
