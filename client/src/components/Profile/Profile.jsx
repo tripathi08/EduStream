@@ -6,14 +6,14 @@ import {fileUploadCss} from "../Auth/Register"
 import { removeFromPlaylist, updateProfilePicture } from '../../redux/actions/profile'
 import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
-import { loadUser } from '../../redux/actions/user'
+import { cancelSubscription, loadUser } from '../../redux/actions/user'
 
 const Profile = ({user}) => {
 
     const dispatch=useDispatch();
 
     const {loading,message,error}=useSelector(state=>state.profile);
-
+    const {loading:subscriptionLoading,message:subscriptionMessage,error:subscriptionError}=useSelector(state=>state.subscription);
     
     const removeFromPlaylistHandler=async (id)=>{
         await dispatch(removeFromPlaylist(id));
@@ -25,7 +25,11 @@ const Profile = ({user}) => {
         const myForm=new FormData();
         myForm.append('file',image);
         await dispatch(updateProfilePicture(myForm));
-        dispatch(loadUser());
+        
+    }
+
+    const cancelSubscriptionHandler=()=>{
+      dispatch(cancelSubscription());
     }
 
     useEffect(()=>{
@@ -36,8 +40,18 @@ const Profile = ({user}) => {
         if(message){
           toast.success(message);
           dispatch({type:'clearMessage'});
+          dispatch(loadUser());
         }
-      },[dispatch,error,message])
+        if(subscriptionError){
+          toast.error(subscriptionError);
+          dispatch({type:'clearError'});
+        }
+        if(subscriptionMessage){
+          toast.success(subscriptionMessage);
+          dispatch({type:'clearMessage'});
+          dispatch(loadUser());
+        }
+      },[dispatch,error,message,subscriptionError,subscriptionMessage])
     
 
     const {isOpen,onClose,onOpen}=useDisclosure();
@@ -70,7 +84,7 @@ const Profile = ({user}) => {
         <HStack>
         <Text children="Subscription: " fontWeight={"bold"}/>
         {user.subscription && user.subscription.status==="active"?(
-            <Button colorScheme='red'>Cancel Subscription</Button>
+            <Button isLoading={subscriptionLoading} onClick={cancelSubscriptionHandler} colorScheme='red'>Cancel Subscription</Button>
         ):( <Link to='/subscribe'>
             <Button colorScheme='yellow'>Subscribe</Button>
             </Link>

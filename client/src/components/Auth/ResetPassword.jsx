@@ -28,7 +28,7 @@ const ResetPassword = () => {
         dispatch({type:'clearMessage'});
         navigate("/login")
       }
-    },[dispatch,error,message])
+    },[dispatch,error,message,navigate])
 
     return (
     <Container py={"16"} height={"90vh"}>

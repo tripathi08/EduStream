@@ -77,7 +77,7 @@ function App() {
         <Route path='/forgotpassword' element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect="/profile"><ForgotPassword/></ProtectedRoute>}/>
         <Route path='/resetpassword/:token' element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect="/profile"><ResetPassword/></ProtectedRoute>}/>
 
-        <Route path='/subscribe' element={<ProtectedRoute isAuthenticated={isAuthenticated}><Subscribe/></ProtectedRoute>}/>
+        <Route path='/subscribe' element={<ProtectedRoute isAuthenticated={isAuthenticated}><Subscribe user={user}/></ProtectedRoute>}/>
         <Route path='*' element={<NotFound/>}/>
         <Route path='/paymentsuccess' element={<PaymentSuccess/>}/>
         <Route path='/paymentfail' element={<PaymentFail/>}/>
