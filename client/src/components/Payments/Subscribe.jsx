@@ -12,6 +12,7 @@ const Subscribe = ({user}) => {
   const [key,setKey]=useState("");
 
   const {loading,error,subscriptionId}=useSelector(state=>state.subscription)
+  const {error:courseError}=useSelector(state=>state.course)
 
   const subscribeHandler=async()=>{
     const {data:{
@@ -23,8 +24,16 @@ const Subscribe = ({user}) => {
 
   useEffect(()=>{
     if(error){
-      toast.error(error);
+      toast.error(error,{
+        duration:5000,
+      });
       dispatch({type:"clearError"})
+    }
+    if (courseError) {
+      toast.error(courseError,{
+        duration:5000,
+      });
+      dispatch({ type: 'clearError' });
     }
     if(subscriptionId){
       const openPopUp=()=>{
@@ -53,7 +62,7 @@ const Subscribe = ({user}) => {
       }
       openPopUp();
     }
-  },[dispatch,error,user.name,user.email,key,subscriptionId])
+  },[dispatch,error,courseError,user.name,user.email,key,subscriptionId])
 
 
   return (

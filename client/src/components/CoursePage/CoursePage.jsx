@@ -1,43 +1,34 @@
 import { Box, Button, Grid, Heading, Text, VStack } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import introVideo from "../../assets/videos/intro.mp4"
+import {useDispatch, useSelector} from "react-redux";
+import {Navigate, useParams} from "react-router-dom"
+import { getCourseLectures } from '../../redux/actions/course';
+import Loader from '../Layout/Loader/Loader';
 
-const CoursePage = () => {
+const CoursePage = ({user}) => {
     const [lectureNumber,setLectureNumber]=useState(0);
-    const lectures=[{
-        _id:"sabccdb",
-        title:"sample title",
-        description:"lcacaj kkncanc kncncn",
-        video:{
-            url:'xsjcdjc',
-        },
-    },{
-        _id:"sabccdb",
-        title:"sample2 title",
-        description:"lcacaj kkncanc kncncn",
-        video:{
-            url:'xsjcdjc',
-        },
-    },{
-        _id:"sabccdb",
-        title:"sample3 title",
-        description:"lcacaj kkncanc kncncn",
-        video:{
-            url:'xsjcdjc',
-        },
-    },{
-        _id:"sabccdb",
-        title:"sample4 title",
-        description:"lcacaj kkncanc kncncn",
-        video:{
-            url:'xsjcdjc',
-        },
-    }
-];
+     const {lectures,loading} = useSelector(state=>state.course)
+    
+const dispatch=useDispatch();
+const params=useParams();
+useEffect(()=>{
+dispatch(getCourseLectures(params.id))
+},[dispatch,params.id]);
+
+
+if(user.role!=='admin' && (user.subscription===undefined || user.subscription.status!=='active')){
+    return <Navigate to={'/subscribe'}/>
+}
+
   return (
-    <Grid minH={"90vh"} templateColumns={["1fr","3fr 1fr"]}>
-       <Box marginLeft={"1rem"} marginTop={"4rem"}>
-       <video width={"100%"} controls controlsList='nodownload noremoteplayback' disablePictureInPicture disableRemotePlayback src={introVideo}>
+    loading?<Loader/>:(
+        <Grid minH={"90vh"} templateColumns={["1fr","3fr 1fr"]}>
+       {
+        lectures && lectures.length>0 ? (
+            <>
+            <Box marginLeft={"1rem"} marginTop={"4rem"}>
+       <video width={"100%"} controls controlsList='nodownload noremoteplayback' disablePictureInPicture disableRemotePlayback src={lectures[lectureNumber].video.url}>
         </video>
         <Heading m={"4"} children={`#${lectureNumber+1} ${lectures[lectureNumber].title}`}/>
         <Heading m={"4"} children={"Description"}/>
@@ -65,7 +56,13 @@ const CoursePage = () => {
             ))
         }
        </VStack>
+            </>
+        ):(
+            <Heading mt={"100"} ml={"20"} children="No lectures available!"/>
+        )
+       }
     </Grid>
+    )
   )
 }
 

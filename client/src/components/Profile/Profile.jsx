@@ -34,20 +34,28 @@ const Profile = ({user}) => {
 
     useEffect(()=>{
         if(error){
-          toast.error(error);
+          toast.error(error,{
+            duration:5000,
+          });
           dispatch({type:'clearError'});
         }
         if(message){
-          toast.success(message);
+          toast.success(message,{
+            duration:5000,
+          });
           dispatch({type:'clearMessage'});
           dispatch(loadUser());
         }
         if(subscriptionError){
-          toast.error(subscriptionError);
+          toast.error(subscriptionError,{
+            duration:5000,
+          });
           dispatch({type:'clearError'});
         }
         if(subscriptionMessage){
-          toast.success(subscriptionMessage);
+          toast.success(subscriptionMessage,{
+            duration:5000,
+          });
           dispatch({type:'clearMessage'});
           dispatch(loadUser());
         }
