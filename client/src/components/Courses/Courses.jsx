@@ -4,8 +4,10 @@ import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux"
 import { getAllCourses } from '../../redux/actions/course';
 import {toast} from "react-hot-toast"
+import {addToPlaylist} from "../../redux/actions/profile"
+import {loadUser} from "../../redux/actions/user"
 
-const Course=({views,title,imageSrc,id,addToPlaylistHandler,creator,description,lectureCount})=>{
+const Course=({views,title,imageSrc,id,addToPlaylistHandler,creator,description,lectureCount,loading})=>{
     return(
     <VStack className='course' alignItems={['center','flex-start']}>
     <Image src={imageSrc} boxSize="60" objectFit={"contain"}/>
@@ -32,7 +34,7 @@ const Course=({views,title,imageSrc,id,addToPlaylistHandler,creator,description,
      <Link to={`/course/${id}`}>
         <Button colorScheme='yellow'>Watch Now</Button>
      </Link>
-     <Button variant={"ghost"} colorScheme='yellow' onClick={()=>addToPlaylistHandler(id)}>Add to Playlist</Button>
+     <Button isLoading={loading} variant={"ghost"} colorScheme='yellow' onClick={()=>addToPlaylistHandler(id)}>Add to Playlist</Button>
     </Stack>
     </VStack>
     )
@@ -45,10 +47,11 @@ const Courses = () => {
 
     const dispatch=useDispatch();
 
-    const {loading,courses,error}=useSelector(state=>state.course)
+    const {loading,courses,error,message}=useSelector(state=>state.course)
 
-    const addToPlaylistHandler=(courseId)=>{
-        console.log("added",courseId);
+    const addToPlaylistHandler=async(courseId)=>{
+       await dispatch(addToPlaylist(courseId));
+       dispatch(loadUser());
     }
 
     const categories=[
@@ -65,7 +68,11 @@ const Courses = () => {
         toast.error(error);
         dispatch({type:"clearError"})
        }
-     },[category,keyword,dispatch,error])
+       if(message){
+        toast.success(message);
+        dispatch({type:"clearMessage"})
+       }
+     },[category,keyword,dispatch,error,message])
     
   return (
     <Container minH={"95vh"}  maxW="container.lg" paddingY='8'>

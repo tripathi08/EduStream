@@ -123,6 +123,17 @@ export const profileReducer= createReducer({},builder=>{
         state.loading=false;
         state.error=action.payload;
     })
+    .addCase('removeFromPlaylistRequest',(state)=>{
+        state.loading=true;
+    })
+    .addCase('removeFromPlaylistSuccess',(state,action)=>{
+        state.loading=false;
+        state.message=action.payload;
+    })
+    .addCase('removeFromPlaylistFail',(state,action)=>{
+        state.loading=false;
+        state.error=action.payload;
+    })
     .addCase('clearError',(state)=>{
         state.error=null;
     })

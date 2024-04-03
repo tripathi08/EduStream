@@ -13,6 +13,23 @@ export const courseReducer= createReducer({courses:[]},builder=>{
         state.loading=false;
         state.error=action.payload;
     })
+    .addCase('addToPlaylistRequest',(state)=>{
+        state.loading=true;
+    })
+    .addCase('addToPlaylistSuccess',(state,action)=>{
+        state.loading=false;
+        state.message=action.payload;
+    })
+    .addCase('addToPlaylistFail',(state,action)=>{
+        state.loading=false;
+        state.error=action.payload;
+    })
+    .addCase('clearError',(state)=>{
+        state.error=null;
+    })
+    .addCase('clearMessage',(state)=>{
+       state.message=null;
+    })
     
 
 })

@@ -12,3 +12,4 @@ export const getAllCourses=(category="",keyword="")=> async(dispatch) =>{
         dispatch({type:'allCoursesFail',payload:error.response.data.message,})
     }
 }
+
