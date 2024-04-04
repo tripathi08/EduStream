@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { RiDeleteBin7Fill } from 'react-icons/ri'
 import {fileUploadCss} from "../../Auth/Register"
 
-const CourseModal = ({isOpen,onClose,id,deleteButtonHandler,addLectureHandler,courseTitle,lectures=[1,2,3,4]}) => {
+const CourseModal = ({isOpen,onClose,id,deleteButtonHandler,addLectureHandler,courseTitle,lectures=[],loading}) => {
   
   const [title,setTitle]=useState("")
   const [description,setDescription]=useState("")
@@ -47,12 +47,13 @@ const CourseModal = ({isOpen,onClose,id,deleteButtonHandler,addLectureHandler,co
             lectures.map((item,i)=>(
                 <VideoCard
                 key={i}
-            title="React Intro"
-            description="This is an intro video"
+            title={item.title}
+            description={item.description}
             num={i+1}
-            lectureId="cbweicbewiceicnecewonc"
+            lectureId={item._id}
             courseId={id}
             deleteButtonHandler={deleteButtonHandler}
+            loading={loading}
           />
             ))
           }
@@ -85,7 +86,7 @@ const CourseModal = ({isOpen,onClose,id,deleteButtonHandler,addLectureHandler,co
                 <video controlsList='nodownload' controls src={videoPrev}></video>
             )
            }
-           <Button width={"full"} colorScheme='purple' type='submit'>Upload</Button>
+           <Button isLoading={loading} width={"full"} colorScheme='purple' type='submit'>Upload</Button>
              </VStack>
             </form>
         </Box>
@@ -104,7 +105,7 @@ const CourseModal = ({isOpen,onClose,id,deleteButtonHandler,addLectureHandler,co
 
 export default CourseModal;
 
-function VideoCard({title,description,num,lectureId,courseId,deleteButtonHandler}){
+function VideoCard({title,description,num,lectureId,courseId,deleteButtonHandler,loading}){
     return(
         <Stack direction={["column","row"]} my={"8"} borderRadius={"lg"} boxShadow={"0 0 10px rgba(107,70,193,0.5)"}
         justifyContent={["flex-start","space-between"]}
@@ -114,7 +115,7 @@ function VideoCard({title,description,num,lectureId,courseId,deleteButtonHandler
                 <Heading size={"sm"} children={`#${num} ${title}`}/>
                 <Text children={description}/>
             </Box>
-            <Button color={"purple.600"} onClick={()=>deleteButtonHandler({courseId,lectureId})}>
+            <Button isLoading={loading} color={"purple.600"} onClick={()=>deleteButtonHandler({courseId,lectureId})}>
                 <RiDeleteBin7Fill/>
             </Button>
         </Stack>

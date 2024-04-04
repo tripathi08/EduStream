@@ -1,6 +1,5 @@
 import { Box, Button, Grid, Heading, Text, VStack } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
-import introVideo from "../../assets/videos/intro.mp4"
 import {useDispatch, useSelector} from "react-redux";
 import {Navigate, useParams} from "react-router-dom"
 import { getCourseLectures } from '../../redux/actions/course';
